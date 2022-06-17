@@ -132,21 +132,6 @@ def run(lib, dev):
 
 ##################################
 class GpuConv2dAnnotator(ExprMutator):
-    """
-    This is used to create external functions for ccompiler.
-    A simple annotator that creates the following program:
-           |
-      -- begin --
-           |
-          add
-           |
-        subtract
-           |
-        multiply
-           |
-       -- end --
-           |
-    """
 
     def __init__(self):
         super(GpuConv2dAnnotator, self).__init__()
@@ -208,18 +193,13 @@ with tvm.transform.PassContext(opt_level=3):
         m.set_input("data", tvm_input)
         elapsed_time = timeit.timeit(m.run, number=10)
         print(elapsed_time)
-        # h_run(lib, [tvm.cpu(), tvm.cuda()])
-# with tvm.transform.PassContext(opt_level=3):
-#         lib = relay.build(ssd, target=targets, params=params)
-#         print("Hetero Device:")
-#         h_run(lib, [tvm.cpu(), tvm.cuda()])
 
-for target in ["cuda", "llvm"]:
-    dev = tvm.device(target, 0)
-    if dev.exist:
-        lib = build(target)
-        print("Device:", target)
-        class_IDs, scores, bounding_boxs = run(lib, dev)
+# for target in ["cuda", "llvm"]:
+#     dev = tvm.device(target, 0)
+#     if dev.exist:
+#         lib = build(target)
+#         print("Device:", target)
+#         class_IDs, scores, bounding_boxs = run(lib, dev)
 
 #     ######################################################################
 #     # Display result
